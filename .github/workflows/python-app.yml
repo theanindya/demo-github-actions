@@ -16,11 +16,11 @@ jobs:
     steps:
       # Step 1: Check out the code from the repository
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # Step 2: Set up Python environment
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.8'
 
@@ -30,6 +30,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Step 4: Run tests
+      
+      # Step 4: Run tests (ensure repo root is on PYTHONPATH so `import src` works)
       - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: pytest
